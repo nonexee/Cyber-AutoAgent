@@ -1,6 +1,6 @@
 # Cyber-AutoAgent - Simple CLI
 
-A minimal autonomous security assessment tool using Claude via Anthropic API.
+A minimal autonomous security assessment tool using OpenAI models (GPT-4, etc.).
 
 ## ⚠️ WARNING
 
@@ -34,11 +34,11 @@ brew install nmap nikto sqlmap
 ### 2. Set API Key
 
 ```bash
-# Set your Anthropic API key
-export ANTHROPIC_API_KEY="your-api-key-here"
+# Set your OpenAI API key
+export OPENAI_API_KEY="your-api-key-here"
 
 # Or create a .env file:
-echo "ANTHROPIC_API_KEY=your-api-key-here" > .env
+echo "OPENAI_API_KEY=your-api-key-here" > .env
 ```
 
 ### 3. Run Assessment
@@ -61,8 +61,8 @@ options:
   --module MODULE          Security module: general, ctf, code_security (default: general)
   --list-modules           List available security modules
   --max-iterations N        Maximum tool executions (default: 50)
-  --model MODEL            Claude model (default: claude-3-5-sonnet-20241022)
-  --api-key KEY            Anthropic API key (or set env var)
+  --model MODEL            OpenAI model (default: gpt-4o, options: gpt-4o, gpt-4-turbo, gpt-4, gpt-3.5-turbo)
+  --api-key KEY            OpenAI API key (or set env var)
   --verbose                Enable debug logging
 ```
 
@@ -149,7 +149,7 @@ python cli.py \
 
 ## How It Works
 
-1. **Agent Creation**: Creates a Claude-powered agent with security tools
+1. **Agent Creation**: Creates an OpenAI-powered agent with security tools
 2. **Reconnaissance**: Agent scans and enumerates the target
 3. **Vulnerability Detection**: Identifies potential security issues
 4. **Memory Storage**: Saves findings to local FAISS vector database
@@ -166,7 +166,7 @@ Results are saved in:
 ```
 cli.py                      # Entry point
 ├── src/modules/
-│   ├── agent.py           # Agent creation with Anthropic
+│   ├── agent.py           # Agent creation with OpenAI
 │   ├── config.py          # Simple configuration
 │   ├── memory.py          # FAISS-based memory
 │   ├── prompts.py         # System prompts
@@ -190,20 +190,22 @@ cli.py                      # Entry point
 ## Requirements
 
 - Python 3.10+
-- Anthropic API key
+- OpenAI API key
 - PyYAML for plugin system
 - Optional: Security tools (nmap, nikto, sqlmap, etc.)
 
 ## API Costs
 
-This tool uses Claude via Anthropic API. Monitor your usage:
-- Claude 3.5 Sonnet: ~$3 per million input tokens, ~$15 per million output tokens
-- A typical assessment might use 50k-200k tokens (~$0.15-$3.00)
+This tool uses OpenAI models. Monitor your usage:
+- GPT-4o: ~$2.50 per million input tokens, ~$10 per million output tokens
+- GPT-4 Turbo: ~$10 per million input tokens, ~$30 per million output tokens
+- GPT-3.5 Turbo: ~$0.50 per million input tokens, ~$1.50 per million output tokens
+- A typical assessment might use 50k-200k tokens (~$0.10-$6.00 depending on model)
 
 ## Troubleshooting
 
 ### "API key not found"
-Set `ANTHROPIC_API_KEY` environment variable or use `--api-key` flag
+Set `OPENAI_API_KEY` environment variable or use `--api-key` flag
 
 ### "Command not found: nmap"
 Install security tools via system package manager

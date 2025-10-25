@@ -1,4 +1,4 @@
-"""Simplified agent creation using Anthropic API."""
+"""Simplified agent creation using OpenAI API."""
 
 import logging
 import os
@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from strands import Agent
-from strands.models.anthropic import AnthropicModel
+from strands.models.openai import OpenAIModel
 from strands_tools.shell import shell
 from strands_tools.editor import editor
 from strands_tools.stop import stop
@@ -30,7 +30,7 @@ class AgentConfig:
 
 
 def create_agent(agent_config: AgentConfig) -> Agent:
-    """Create a simple agent using Anthropic API.
+    """Create a simple agent using OpenAI API.
 
     Args:
         agent_config: Agent configuration
@@ -44,8 +44,8 @@ def create_agent(agent_config: AgentConfig) -> Agent:
 
     logger.info(f"Creating agent with model: {config.model}")
 
-    # Create Anthropic model
-    model = AnthropicModel(
+    # Create OpenAI model
+    model = OpenAIModel(
         model=config.model,
         api_key=config.api_key,
         max_tokens=config.max_tokens,

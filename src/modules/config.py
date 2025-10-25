@@ -1,13 +1,13 @@
-"""Simple configuration for Anthropic API."""
+"""Simple configuration for OpenAI API."""
 
 from dataclasses import dataclass
 
 
 @dataclass
 class SimpleConfig:
-    """Simple configuration for Claude via Anthropic API."""
+    """Simple configuration for OpenAI models."""
 
-    model: str = "claude-3-5-sonnet-20241022"
+    model: str = "gpt-4o"
     api_key: str = ""
     max_tokens: int = 4096
     temperature: float = 0.7

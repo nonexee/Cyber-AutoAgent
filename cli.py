@@ -2,7 +2,7 @@
 """
 Cyber-AutoAgent - Simple CLI for Autonomous Security Assessment
 
-Minimal implementation using Claude via Anthropic API.
+Minimal implementation using OpenAI models (GPT-4, etc.).
 """
 
 import argparse
@@ -55,13 +55,13 @@ def main():
     parser.add_argument(
         "--model",
         type=str,
-        default="claude-3-5-sonnet-20241022",
-        help="Claude model to use (default: claude-3-5-sonnet-20241022)"
+        default="gpt-4o",
+        help="OpenAI model to use (default: gpt-4o, options: gpt-4o, gpt-4-turbo, gpt-4, gpt-3.5-turbo)"
     )
     parser.add_argument(
         "--api-key",
         type=str,
-        help="Anthropic API key (or set ANTHROPIC_API_KEY env var)"
+        help="OpenAI API key (or set OPENAI_API_KEY env var)"
     )
     parser.add_argument(
         "--module",
@@ -98,12 +98,12 @@ def main():
         logging.getLogger().setLevel(logging.DEBUG)
 
     # Check for API key
-    api_key = args.api_key or os.getenv("ANTHROPIC_API_KEY")
+    api_key = args.api_key or os.getenv("OPENAI_API_KEY")
     if not api_key:
-        logger.error("Anthropic API key not found. Set ANTHROPIC_API_KEY environment variable or use --api-key")
+        logger.error("OpenAI API key not found. Set OPENAI_API_KEY environment variable or use --api-key")
         sys.exit(1)
 
-    os.environ["ANTHROPIC_API_KEY"] = api_key
+    os.environ["OPENAI_API_KEY"] = api_key
 
     # Create output directory
     output_dir = Path("outputs")
