@@ -16,12 +16,16 @@ A minimal autonomous security assessment tool using OpenAI models with built-in 
 ### 1. Install Dependencies
 
 ```bash
-# Create virtual environment
-python -m venv venv
+# Create virtual environment (recommended)
+python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install Python dependencies
 pip install -r requirements.txt
+
+# If you encounter permission errors on Linux:
+# pip install -r requirements.txt --user
+# OR use virtual environment (recommended above)
 
 # Install security tools (optional, but recommended)
 # Ubuntu/Debian:
@@ -30,6 +34,8 @@ sudo apt install nmap nikto sqlmap
 # macOS:
 brew install nmap nikto sqlmap
 ```
+
+> **Note:** If you get errors about `strands-tools`, that's expected - tools are included in `strands-agents`. See [INSTALL.md](INSTALL.md) for detailed troubleshooting.
 
 ### 2. Set API Key
 

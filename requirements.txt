@@ -1,6 +1,6 @@
 # Core dependencies for simple CLI version
-strands-agents>=0.1.0
-strands-tools>=0.1.0
+# Strands framework includes both agents and tools
+strands-agents>=1.11.0
 mem0ai>=0.1.0
 python-dotenv>=1.0.0
 
@@ -9,6 +9,9 @@ faiss-cpu>=1.7.4
 
 # For plugin system
 pyyaml>=6.0.0
+
+# OpenAI API client (usually installed with strands-agents)
+openai>=1.0.0
 
 # Security tools (install separately as needed)
 # nmap, nikto, sqlmap, etc. - install via system package manager

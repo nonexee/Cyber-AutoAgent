@@ -7,9 +7,17 @@ from typing import Optional
 
 from strands import Agent
 from strands.models.openai import OpenAIModel
-from strands_tools.shell import shell
-from strands_tools.editor import editor
-from strands_tools.stop import stop
+
+# Tools are part of strands.tools, not separate package
+try:
+    from strands.tools.shell import shell
+    from strands.tools.editor import editor
+    from strands.tools.stop import stop
+except ImportError:
+    # Fallback for older versions
+    from strands_tools.shell import shell
+    from strands_tools.editor import editor
+    from strands_tools.stop import stop
 
 from .config import SimpleConfig
 from .memory import initialize_memory, mem0_memory
