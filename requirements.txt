@@ -1,0 +1,11 @@
+# Core dependencies for simple CLI version
+strands-agents>=0.1.0
+strands-tools>=0.1.0
+mem0ai>=0.1.0
+python-dotenv>=1.0.0
+
+# For FAISS vector store
+faiss-cpu>=1.7.4
+
+# Security tools (install separately as needed)
+# nmap, nikto, sqlmap, etc. - install via system package manager

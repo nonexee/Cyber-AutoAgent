@@ -4,149 +4,37 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cyber-autoagent"
-version = "0.1.3"
-description = "Autonomous cybersecurity agent designed for ethical security assessments"
+version = "0.2.0"
+description = "Simple autonomous security assessment tool using Claude"
 readme = "README.md"
 authors = [
     {name = "Cyber-AutoAgent Team", email = "aaron.weston.brown@gmail.com"}
 ]
 license = {text = "MIT"}
-keywords = ["cybersecurity", "penetration-testing", "autonomous", "ai-agent", "security-assessment"]
+keywords = ["cybersecurity", "penetration-testing", "ai-agent", "claude", "anthropic"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Information Technology",
-    "Intended Audience :: System Administrators", 
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10", 
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Security",
-    "Topic :: System :: Systems Administration",
     "Environment :: Console"
 ]
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.10"
 dependencies = [
-    "strands-agents[ollama,otel,litellm]==1.11.0",
-    "strands-agents-tools==0.2.9", 
-    "mem0ai",
-    "boto3>=1.39.10",
-    "botocore>=1.39.10",
-    "faiss-cpu",
-    "ollama>=0.1.0",
-    "requests>=2.25.0",
-    "opensearch-py",
-    "opentelemetry-api",
-    "opentelemetry-sdk",
-    "opentelemetry-exporter-otlp-proto-http>=1.30.0",
-    "pyarrow>=14.0.0,<20.0.0",
-    "ragas>=0.3.0",
-    "langfuse>=2.0.0",
-    "langchain-aws>=0.2.0",
-    "langchain-ollama>=0.2.0"
+    "strands-agents>=1.11.0",
+    "strands-agents-tools>=0.2.9",
+    "mem0ai>=0.1.0",
+    "faiss-cpu>=1.7.4",
+    "python-dotenv>=1.0.0",
 ]
-
-[project.optional-dependencies]
-dev = [
-    "pytest",
-    "pytest-cov",
-    "pytest-mock",
-    "black",
-    "isort",
-    "flake8",
-    "mypy"
-]
-
-[project.urls]
-Homepage = "https://github.com/cyber-autoagent/cyber-autoagent"
-Repository = "https://github.com/cyber-autoagent/cyber-autoagent"
-Documentation = "https://github.com/cyber-autoagent/cyber-autoagent#readme"
-"Bug Tracker" = "https://github.com/cyber-autoagent/cyber-autoagent/issues"
 
 [project.scripts]
-cyber-autoagent = "cyberautoagent:main"
+cyber-autoagent = "cli:main"
 
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["*"]
-
-[tool.setuptools.package-dir]
-"" = "src"
-
-[tool.black]
-line-length = 120
-target-version = ['py310']
-include = '\.pyi?$'
-extend-exclude = '''
-/(
-  # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | build
-  | dist
-)/
-'''
-
-[tool.isort]
-profile = "black"
-line_length = 120
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-ensure_newline_before_comments = true
-
-[tool.mypy]
-python_version = "3.11"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-ignore_missing_imports = true
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py", "*_test.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-addopts = [
-    "--strict-markers",
-    "--strict-config",
-    "--verbose"
-]
-pythonpath = ["src"]
-
-[tool.pylint.main]
-# Disable specific warnings that are not relevant for this project
-disable = [
-    "too-many-positional-arguments",  # R0917 - Common for API functions
-    "unused-argument",               # W0613 - Common for API compatibility
-    "too-many-lines",               # C0302 - Some modules need to be large
-    "too-many-nested-blocks",       # R1702 - Complex logic sometimes needed
-    "logging-fstring-interpolation", # W1203 - f-strings in logging are readable
-    "redefined-outer-name",         # W0621 - Common in function parameters
-    "no-else-continue",             # R1724 - Sometimes else-continue is clearer
-    "attribute-defined-outside-init" # W0201 - Sometimes needed for complex initialization
-]
-
-[tool.pylint.format]
-max-line-length = 120
-
-[tool.pylint.design]
-# Allow more arguments and attributes for complex classes
-max-args = 10
-max-attributes = 15
-
-[dependency-groups]
-dev = [
-    "pylint>=3.3.7",
-    "pyright>=1.1.402",
-    "pytest>=8.4.1",
-    "pytest-mock>=3.14.1",
-    "ruff>=0.12.1",
-]
+[tool.setuptools]
+packages = ["src", "src.modules"]
