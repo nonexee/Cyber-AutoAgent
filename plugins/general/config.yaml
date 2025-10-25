@@ -1,0 +1,24 @@
+name: general
+display_name: General Security Assessment
+description: Comprehensive web application and network security testing
+version: 1.0.0
+author: Cyber-AutoAgent Team
+
+# Tool recommendations for this module
+recommended_tools:
+  - nmap
+  - nikto
+  - sqlmap
+  - gobuster
+  - dirb
+  - wpscan
+  - nuclei
+
+# Example targets
+examples:
+  - target: "http://testphp.vulnweb.com"
+    objective: "Find SQL injection vulnerabilities"
+  - target: "192.168.1.0/24"
+    objective: "Network reconnaissance and service enumeration"
+  - target: "https://example.com"
+    objective: "Complete web application security assessment"

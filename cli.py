@@ -18,6 +18,7 @@ load_dotenv()
 
 from src.modules.agent import create_agent, AgentConfig
 from src.modules.config import SimpleConfig
+from src.modules.plugins import list_available_modules
 
 # Setup logging
 logging.basicConfig(
@@ -63,12 +64,34 @@ def main():
         help="Anthropic API key (or set ANTHROPIC_API_KEY env var)"
     )
     parser.add_argument(
+        "--module",
+        type=str,
+        default="general",
+        help="Security module to use: general (default), ctf, code_security"
+    )
+    parser.add_argument(
+        "--list-modules",
+        action="store_true",
+        help="List available security modules and exit"
+    )
+    parser.add_argument(
         "--verbose",
         action="store_true",
         help="Enable verbose logging"
     )
 
     args = parser.parse_args()
+
+    # Handle --list-modules
+    if args.list_modules:
+        modules = list_available_modules()
+        print("\nAvailable Security Modules:")
+        print("=" * 60)
+        for name, display_name in modules.items():
+            print(f"  {name:20} - {display_name}")
+        print("=" * 60)
+        print(f"\nUsage: --module <name>")
+        sys.exit(0)
 
     # Set verbose logging if requested
     if args.verbose:
@@ -89,6 +112,7 @@ def main():
     logger.info("=" * 80)
     logger.info("CYBER-AUTOAGENT - SIMPLE CLI")
     logger.info("=" * 80)
+    logger.info(f"Module: {args.module}")
     logger.info(f"Target: {args.target}")
     logger.info(f"Objective: {args.objective}")
     logger.info(f"Model: {args.model}")
@@ -108,7 +132,8 @@ def main():
         target=args.target,
         objective=args.objective,
         max_steps=args.max_iterations,
-        config=config
+        config=config,
+        module=args.module
     )
 
     try:

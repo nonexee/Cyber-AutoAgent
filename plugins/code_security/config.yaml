@@ -1,0 +1,25 @@
+name: code_security
+display_name: Code Security Analysis
+description: Static and dynamic security code review
+version: 1.0.0
+author: Cyber-AutoAgent Team
+
+# Tool recommendations for this module
+recommended_tools:
+  - bandit
+  - semgrep
+  - eslint
+  - gosec
+  - brakeman
+  - spotbugs
+  - pip-audit
+  - npm-audit
+
+# Example targets
+examples:
+  - target: "./src"
+    objective: "Find security vulnerabilities in Python code"
+  - target: "./app"
+    objective: "Review JavaScript/Node.js application for security issues"
+  - target: "./backend"
+    objective: "Complete security audit of Java application"

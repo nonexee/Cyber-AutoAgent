@@ -1,0 +1,27 @@
+name: ctf
+display_name: CTF Challenge Solver
+description: Solve Capture The Flag cybersecurity challenges
+version: 1.0.0
+author: Cyber-AutoAgent Team
+
+# Tool recommendations for this module
+recommended_tools:
+  - strings
+  - file
+  - binwalk
+  - hashcat
+  - john
+  - ghidra
+  - radare2
+  - gdb
+  - stegsolve
+  - exiftool
+
+# Example challenges
+examples:
+  - target: "challenge.bin"
+    objective: "Extract the flag from binary"
+  - target: "http://ctf.example.com/web1"
+    objective: "Solve web exploitation challenge"
+  - target: "encrypted.txt"
+    objective: "Decrypt the message and find the flag"

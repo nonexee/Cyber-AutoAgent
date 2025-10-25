@@ -1,17 +1,34 @@
 """System prompts for the security agent."""
 
+from typing import Optional
+from .plugins import get_plugin
 
-def get_system_prompt(target: str, objective: str, max_steps: int) -> str:
-    """Generate system prompt for the agent.
+
+def get_system_prompt(
+    target: str,
+    objective: str,
+    max_steps: int,
+    module: str = "general"
+) -> str:
+    """Generate system prompt for the agent using plugin system.
 
     Args:
         target: Target system
         objective: Assessment objective
         max_steps: Maximum number of steps
+        module: Module/plugin to use (default: "general")
 
     Returns:
         System prompt string
     """
+    # Try to load plugin
+    plugin = get_plugin(module)
+
+    if plugin and plugin.prompt_template:
+        # Use plugin's prompt template
+        return plugin.get_prompt(target, objective, max_steps)
+
+    # Fallback to basic prompt if plugin not found
     return f"""You are a professional security assessment agent conducting an authorized penetration test.
 
 TARGET: {target}

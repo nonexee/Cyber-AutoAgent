@@ -26,6 +26,7 @@ class AgentConfig:
     objective: str
     max_steps: int = 50
     config: Optional[SimpleConfig] = None
+    module: str = "general"
 
 
 def create_agent(agent_config: AgentConfig) -> Agent:
@@ -65,11 +66,12 @@ def create_agent(agent_config: AgentConfig) -> Agent:
         stop,           # Stop when objective is met
     ]
 
-    # Get system prompt
+    # Get system prompt (with module support)
     system_prompt = get_system_prompt(
         target=agent_config.target,
         objective=agent_config.objective,
-        max_steps=agent_config.max_steps
+        max_steps=agent_config.max_steps,
+        module=agent_config.module
     )
 
     # Create agent

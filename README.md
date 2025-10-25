@@ -58,36 +58,92 @@ python cli.py --help
 options:
   --target TARGET           Target system to assess (REQUIRED)
   --objective OBJECTIVE     Security assessment objective (REQUIRED)
+  --module MODULE          Security module: general, ctf, code_security (default: general)
+  --list-modules           List available security modules
   --max-iterations N        Maximum tool executions (default: 50)
   --model MODEL            Claude model (default: claude-3-5-sonnet-20241022)
   --api-key KEY            Anthropic API key (or set env var)
   --verbose                Enable debug logging
 ```
 
+## Security Modules
+
+The tool supports different operation modes via plugins:
+
+### Available Modules
+
+```bash
+# List all available modules
+python cli.py --list-modules
+```
+
+**1. General Security Assessment** (`--module general`)
+- Web application testing
+- Network reconnaissance
+- Vulnerability scanning
+- OWASP Top 10 testing
+- Tools: nmap, nikto, sqlmap, gobuster, nuclei
+
+**2. CTF Challenge Solver** (`--module ctf`)
+- Capture The Flag challenges
+- Cryptography puzzles
+- Reverse engineering
+- Binary exploitation
+- Forensics analysis
+- Tools: strings, binwalk, hashcat, ghidra, radare2
+
+**3. Code Security Analysis** (`--module code_security`)
+- Static code analysis
+- Vulnerability detection
+- Dependency auditing
+- Security code review
+- Tools: bandit, semgrep, eslint, gosec
+
 ## Examples
 
-### Basic Web Application Scan
+### Web Application Security Test
 
 ```bash
 python cli.py \
-  --target "http://example.com" \
-  --objective "Identify web vulnerabilities"
+  --module general \
+  --target "http://testphp.vulnweb.com" \
+  --objective "Find SQL injection and XSS vulnerabilities"
+```
+
+### CTF Challenge
+
+```bash
+python cli.py \
+  --module ctf \
+  --target "challenge.bin" \
+  --objective "Extract the flag from this binary"
+```
+
+### Code Security Review
+
+```bash
+python cli.py \
+  --module code_security \
+  --target "./src" \
+  --objective "Find security vulnerabilities in Python code"
 ```
 
 ### Network Reconnaissance
 
 ```bash
 python cli.py \
+  --module general \
   --target "192.168.1.0/24" \
-  --objective "Map network and identify open services"
+  --objective "Map network and identify services"
 ```
 
 ### Verbose Mode
 
 ```bash
 python cli.py \
+  --module general \
   --target "http://test.local" \
-  --objective "Security assessment" \
+  --objective "Complete security assessment" \
   --verbose
 ```
 
@@ -110,10 +166,17 @@ Results are saved in:
 ```
 cli.py                      # Entry point
 ├── src/modules/
-│   ├── agent.py           # Agent creation
+│   ├── agent.py           # Agent creation with Anthropic
 │   ├── config.py          # Simple configuration
 │   ├── memory.py          # FAISS-based memory
-│   └── prompts.py         # System prompts
+│   ├── prompts.py         # System prompts
+│   └── plugins.py         # Plugin system
+├── plugins/               # Security modules
+│   ├── general/          # Web & network security
+│   │   ├── config.yaml   # Module metadata
+│   │   └── prompt.md     # System prompt
+│   ├── ctf/              # CTF challenges
+│   └── code_security/    # Code analysis
 └── outputs/               # Assessment results
 ```
 
@@ -128,6 +191,7 @@ cli.py                      # Entry point
 
 - Python 3.10+
 - Anthropic API key
+- PyYAML for plugin system
 - Optional: Security tools (nmap, nikto, sqlmap, etc.)
 
 ## API Costs
