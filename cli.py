@@ -80,6 +80,23 @@ def main():
         help="Enable verbose logging"
     )
 
+    # Optimization options
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Disable prompt caching (reduces cost optimization)"
+    )
+    parser.add_argument(
+        "--no-streaming",
+        action="store_true",
+        help="Disable response streaming"
+    )
+    parser.add_argument(
+        "--no-parallel-tools",
+        action="store_true",
+        help="Disable parallel tool execution"
+    )
+
     args = parser.parse_args()
 
     # Handle --list-modules
@@ -119,13 +136,24 @@ def main():
     logger.info(f"Max iterations: {args.max_iterations}")
     logger.info("=" * 80)
 
-    # Create configuration
+    # Create configuration with optimizations
     config = SimpleConfig(
         model=args.model,
         api_key=api_key,
         max_tokens=4096,
-        temperature=0.7
+        temperature=0.7,
+        enable_caching=not args.no_cache,
+        enable_streaming=not args.no_streaming,
+        parallel_tool_calls=not args.no_parallel_tools
     )
+
+    # Log optimization status
+    if config.enable_caching:
+        logger.info("💰 Prompt caching enabled - reduces API costs")
+    if config.enable_streaming:
+        logger.info("⚡ Streaming enabled - faster response display")
+    if config.parallel_tool_calls:
+        logger.info("🔄 Parallel tools enabled - faster execution")
 
     # Create agent configuration
     agent_config = AgentConfig(

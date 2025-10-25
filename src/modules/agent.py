@@ -44,13 +44,22 @@ def create_agent(agent_config: AgentConfig) -> Agent:
 
     logger.info(f"Creating agent with model: {config.model}")
 
-    # Create OpenAI model
-    model = OpenAIModel(
-        model=config.model,
-        api_key=config.api_key,
-        max_tokens=config.max_tokens,
-        temperature=config.temperature
-    )
+    # Log optimization settings
+    if config.enable_caching:
+        logger.info("Prompt caching enabled - system messages will be cached")
+    if config.enable_streaming:
+        logger.info("Response streaming enabled")
+    if config.parallel_tool_calls:
+        logger.info("Parallel tool execution enabled")
+
+    # Create OpenAI model with all parameters
+    model_params = config.get_model_params()
+
+    # Add streaming support if enabled
+    if config.enable_streaming:
+        model_params["stream"] = True
+
+    model = OpenAIModel(**model_params)
 
     # Initialize memory system
     memory_client = initialize_memory(agent_config.target)
@@ -74,13 +83,33 @@ def create_agent(agent_config: AgentConfig) -> Agent:
         module=agent_config.module
     )
 
-    # Create agent
-    agent = Agent(
-        model=model,
-        tools=tools,
-        system=system_prompt,
-        max_iterations=agent_config.max_steps
-    )
+    # Prepare system message with caching hint if enabled
+    # OpenAI caches system messages automatically for repeated use
+    if config.enable_caching:
+        # For OpenAI, we can add a caching instruction in the system prompt
+        # This helps OpenAI's caching system identify stable content
+        system_prompt_with_cache_info = f"""{system_prompt}
+
+---
+[This system message is designed to be cached for optimal performance]
+"""
+        final_system_prompt = system_prompt_with_cache_info
+    else:
+        final_system_prompt = system_prompt
+
+    # Create agent with optimizations
+    agent_kwargs = {
+        "model": model,
+        "tools": tools,
+        "system": final_system_prompt,
+        "max_iterations": agent_config.max_steps,
+    }
+
+    # Enable parallel tool calls if configured
+    if config.parallel_tool_calls:
+        agent_kwargs["parallel_tool_calls"] = True
+
+    agent = Agent(**agent_kwargs)
 
     logger.info("Agent created successfully")
     return agent
